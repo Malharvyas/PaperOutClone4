@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Register" />
+        <activity android:name=".Login" />
+        <activity android:name=".OptionsMenu" />
+        <activity android:name=".ForgotPassword" />
+        <activity android:name=".PDFView" />
+        <activity android:name=".SplashScreen" />
     </application>
 
 </manifest>

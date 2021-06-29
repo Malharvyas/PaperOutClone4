@@ -1,17 +1,55 @@
 package com.example.paperoutclone4.Fragments;
 
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.ClientError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.paperoutclone4.Adapter.EbookAdpter;
+import com.example.paperoutclone4.Class.BaseUrl;
+import com.example.paperoutclone4.Class.GridSpacing;
+import com.example.paperoutclone4.Model.EbookCourseModel;
 import com.example.paperoutclone4.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
-public class EbooksFragment extends Fragment {
+public class EbooksFragment extends Fragment implements EbookAdpter.onClickListener {
 
+    List<EbookCourseModel> ebookCourseModelList = new ArrayList<>();
+    String url = "", type = "1";
+    RecyclerView image_recycler;
+    ProgressBar progressBar;
+    RecyclerView.Adapter adapter;
 
     public EbooksFragment() {
         // Required empty public constructor
@@ -25,14 +63,122 @@ public class EbooksFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        adapter = new EbookAdpter(getContext(), ebookCourseModelList, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_ebooks, container, false);
+        image_recycler = v.findViewById(R.id.image_recycler);
+        progressBar = v.findViewById(R.id.progressBar);
+
+        image_recycler.setHasFixedSize(true);
+        image_recycler.setItemAnimator(new DefaultItemAnimator());
+        image_recycler.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
+        image_recycler.setAdapter(adapter);
+        image_recycler.addItemDecoration(new GridSpacing(5));
+
+        getCourse(type);
+
         return v;
+    }
+
+    private void getCourse(String type) {
+        progressBar.setVisibility(View.VISIBLE);
+        BaseUrl b = new BaseUrl();
+        url = b.url;
+        url = url.concat("eknumber/api/Course/course");
+        RequestQueue volleyRequestQueue = Volley.newRequestQueue(getContext());
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressBar.setVisibility(View.GONE);
+                        Log.e("PrintLog", "----course_Response----" + response);
+                        BaseUrl b = new BaseUrl();
+                        url = b.url;
+                        if (response != null) {
+                            ebookCourseModelList.clear();
+                            JSONObject json = null;
+
+                            try {
+                                json = new JSONObject(String.valueOf(response));
+                                Boolean status = json.getBoolean("status");
+                                if (status) {
+                                    JSONArray data = json.getJSONArray("data");
+                                    String dataStr = data.toString();
+                                    Log.e("PrintLog", "----dataStr----" + dataStr);
+                                    Gson gson = new Gson();
+
+                                    Type courseListType = new TypeToken<List<EbookCourseModel>>() {
+                                    }.getType();
+
+                                    ebookCourseModelList.addAll(gson.fromJson(dataStr, courseListType));
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+                BaseUrl b = new BaseUrl();
+                url = b.url;
+                if (error instanceof ClientError) {
+                    try {
+                        String responsebody = new String(error.networkResponse.data, "utf-8");
+                        JSONObject data = new JSONObject(responsebody);
+                        Boolean status = data.getBoolean("status");
+                        String stat = status.toString();
+                        if (stat.equals("false")) {
+                            String msg = data.getString("message");
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("type", type);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = "HRCET:.r*fm5D%d-Re45-)";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", auth);
+                headers.put("x-api-key", "HRCETCRACKER@123");
+//                headers.put("Content-Type", "application/form-data");
+                return headers;
+            }
+        };
+        volleyRequestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        );
+    }
+
+    @Override
+    public void onClicked(int position) {
+
     }
 }
