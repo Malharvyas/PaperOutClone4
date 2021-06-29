@@ -47,7 +47,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
     Button buy;
     String username, useremail, usermobile, price, s_id, url = "";
     String course_id;
-    TextView selling_price, course_name, actual_price;
+    TextView selling_price, course_name, actual_price, description, tvValidity;
     ProgressBar progressBar;
     private ImageView imageView, btnBackSpace;
     EbookCourseModel ebookCourseModel;
@@ -75,6 +75,8 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         actual_price = findViewById(R.id.actual_price);
         btnBackSpace = findViewById(R.id.btnBackSpace);
         view = findViewById(R.id.view);
+        description = findViewById(R.id.description);
+        tvValidity = findViewById(R.id.tvValidity);
 
         Intent i = getIntent();
         ebookCourseModel = (EbookCourseModel) i.getSerializableExtra("ebook");
@@ -82,6 +84,8 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(imageView);
         course_name.setText(ebookCourseModel.getCourseName());
         selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
+        description.setText(ebookCourseModel.getShortDescription());
+        tvValidity.setText(ebookCourseModel.getValidity());
 
         if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {
             actual_price.setVisibility(View.INVISIBLE);
