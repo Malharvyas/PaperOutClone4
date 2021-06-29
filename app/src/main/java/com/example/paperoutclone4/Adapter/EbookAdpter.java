@@ -45,6 +45,7 @@ public class EbookAdpter extends RecyclerView.Adapter<EbookAdpter.ViewHolder> {
 
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(holder.imageView);
 
+
     }
 
     @Override

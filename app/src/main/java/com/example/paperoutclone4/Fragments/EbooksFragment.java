@@ -31,6 +31,7 @@ import com.example.paperoutclone4.Model.EbookCourseModel;
 import com.example.paperoutclone4.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,6 +79,8 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
         image_recycler.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
         image_recycler.setAdapter(adapter);
         image_recycler.addItemDecoration(new GridSpacing(5));
+
+
 
         getCourse(type);
 
