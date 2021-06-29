@@ -81,7 +81,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
 
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(imageView);
         course_name.setText(ebookCourseModel.getCourseName());
-        selling_price.setText(ebookCourseModel.getPrice());
+        selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
 
         if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {
             actual_price.setVisibility(View.INVISIBLE);
