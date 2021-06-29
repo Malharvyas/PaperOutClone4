@@ -1,5 +1,6 @@
 package com.example.paperoutclone4.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.paperoutclone4.Adapter.EbookAdpter;
 import com.example.paperoutclone4.Class.BaseUrl;
 import com.example.paperoutclone4.Class.GridSpacing;
+import com.example.paperoutclone4.CourseActivity;
 import com.example.paperoutclone4.Model.EbookCourseModel;
 import com.example.paperoutclone4.R;
 import com.google.gson.Gson;
@@ -79,7 +82,6 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
         image_recycler.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
         image_recycler.setAdapter(adapter);
         image_recycler.addItemDecoration(new GridSpacing(5));
-
 
 
         getCourse(type);
@@ -182,6 +184,9 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
 
     @Override
     public void onClicked(int position) {
-
+        EbookCourseModel eb = ebookCourseModelList.get(position);
+        Intent i = new Intent(getContext(), CourseActivity.class);
+        i.putExtra("ebook", eb);
+        startActivity(i);
     }
 }

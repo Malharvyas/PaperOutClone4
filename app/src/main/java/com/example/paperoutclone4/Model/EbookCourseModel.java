@@ -3,7 +3,9 @@ package com.example.paperoutclone4.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class EbookCourseModel {
+import java.io.Serializable;
+
+public class EbookCourseModel implements Serializable {
 
     @SerializedName("course_id")
     @Expose

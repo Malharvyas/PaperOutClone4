@@ -1,17 +1,15 @@
-package com.example.paperoutclone4.Fragments;
+package com.example.paperoutclone4;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,7 +29,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.paperoutclone4.Class.BaseUrl;
 import com.example.paperoutclone4.Model.EbookCourseModel;
-import com.example.paperoutclone4.R;
 import com.razorpay.Checkout;
 import com.squareup.picasso.Picasso;
 
@@ -41,8 +38,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-
-public class CourseFragment extends Fragment {
+public class CourseActivity extends AppCompatActivity {
 
     Button buy;
     String username, useremail, usermobile, price, s_id, url = "";
@@ -52,40 +48,26 @@ public class CourseFragment extends Fragment {
     private ImageView imageView;
     EbookCourseModel ebookCourseModel;
 
-    public CourseFragment() {
-        // Required empty public constructor
-    }
-
-    public static CourseFragment newInstance(String param1, String param2) {
-        CourseFragment fragment = new CourseFragment();
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userpref", Context.MODE_PRIVATE);
+        setContentView(R.layout.activity_course);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userpref", Context.MODE_PRIVATE);
         s_id = sharedPreferences.getString("sid", "");
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_course, container, false);
+        buy = findViewById(R.id.buy_course);
+        selling_price = findViewById(R.id.selling_price);
+        progressBar = findViewById(R.id.progressBar);
+        imageView = findViewById(R.id.imageView);
+        course_name = findViewById(R.id.course_name);
+        actual_price = findViewById(R.id.actual_price);
 
-        buy = v.findViewById(R.id.buy_course);
-        selling_price = v.findViewById(R.id.selling_price);
-        progressBar = v.findViewById(R.id.progressBar);
-        imageView = v.findViewById(R.id.imageView);
-        course_name = v.findViewById(R.id.course_name);
-        actual_price = v.findViewById(R.id.actual_price);
+        Intent i = getIntent();
+        ebookCourseModel = (EbookCourseModel) i.getSerializableExtra("ebook");
 
-        if (getArguments() != null) {
-            ebookCourseModel = (EbookCourseModel) getArguments().getSerializable("emocks");
-        }
-
-        course_name.setText(ebookCourseModel.getCourseName());
-        actual_price.setText(ebookCourseModel.getDiscountedPrice());
+        course_name.setText("\u20B9" + " " + ebookCourseModel.getCourseName());
+        actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
         selling_price.setText(ebookCourseModel.getPrice());
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(imageView);
 
@@ -98,11 +80,10 @@ public class CourseFragment extends Fragment {
                 }
             }
         });
-        return v;
     }
 
     private void startrazorpay(String price) {
-        SharedPreferences userpref = getContext().getSharedPreferences("userpref", Context.MODE_PRIVATE);
+        SharedPreferences userpref = getSharedPreferences("userpref", Context.MODE_PRIVATE);
         username = userpref.getString("s_name", "NA");
         useremail = userpref.getString("s_email", "NA");
         usermobile = userpref.getString("s_mobile", "NA");
@@ -110,7 +91,7 @@ public class CourseFragment extends Fragment {
         int amount = Integer.parseInt(price);
         amount = amount * 100;
 
-        Checkout.preload(getContext());
+        Checkout.preload(this);
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_live_HU0xL5fylvOKxY");
 
@@ -128,7 +109,7 @@ public class CourseFragment extends Fragment {
             retryObj.put("max_count", 4);
             options.put("retry", retryObj);
 
-            checkout.open((Activity) getContext(), options);
+            checkout.open((Activity) CourseActivity.this, options);
 
         } catch (Exception e) {
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
@@ -138,7 +119,7 @@ public class CourseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("payment_details", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
         String payment_status = sharedPreferences.getString("course_payment", "0");
         String selected = sharedPreferences.getString("selected", "0");
 
@@ -152,7 +133,7 @@ public class CourseFragment extends Fragment {
         BaseUrl b = new BaseUrl();
         url = b.url;
         url = url.concat("eknumber/api/PlanActive/plan_active");
-        RequestQueue volleyRequestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue volleyRequestQueue = Volley.newRequestQueue(CourseActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -167,8 +148,8 @@ public class CourseFragment extends Fragment {
                                 Boolean status = json.getBoolean("status");
                                 if (status == true) {
                                     String msg = json.getString("message");
-                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("payment_details", Context.MODE_PRIVATE);
+                                    Toast.makeText(CourseActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                    SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.clear();
                                     editor.apply();
@@ -192,17 +173,17 @@ public class CourseFragment extends Fragment {
                         String stat = status.toString();
                         if (stat.equals("false")) {
                             String msg = data.getString("message");
-                            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                            Toast.makeText(CourseActivity.this, msg, Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getContext(), "Please make sure you have an active Internet connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CourseActivity.this, "Please make sure you have an active Internet connection.", Toast.LENGTH_SHORT).show();
                 } else if (error instanceof TimeoutError) {
-                    Toast.makeText(getContext(), "Server is taking more than usual time to respond,please try after sometime.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CourseActivity.this, "Server is taking more than usual time to respond,please try after sometime.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(CourseActivity.this, error.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         }) {

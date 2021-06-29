@@ -61,7 +61,7 @@
                 android:layout_marginTop="10sp"
                 android:background="#757575"
                 android:translationX="-3dp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintLeft_toLeftOf="@id/actual_price"
                 app:layout_constraintTop_toTopOf="@id/actual_price" />
 
