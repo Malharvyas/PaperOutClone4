@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.hssc.app.ProfileFragment.EditProfileFragment;
-import com.hssc.app.R;
+import com.example.paperoutclone4.ProfileFragment.EditProfileFragment;
+import com.example.paperoutclone4.R;
 
 
 public class ProfileFragment extends Fragment {

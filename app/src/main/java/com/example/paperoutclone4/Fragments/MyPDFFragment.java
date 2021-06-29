@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.hssc.app.R;
+import com.example.paperoutclone4.R;
+
 
 public class MyPDFFragment extends Fragment {
 
