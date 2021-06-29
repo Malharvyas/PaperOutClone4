@@ -39,11 +39,19 @@ public class EmockskAdpter extends RecyclerView.Adapter<EmockskAdpter.ViewHolder
     public void onBindViewHolder(@NonNull EmockskAdpter.ViewHolder holder, int position) {
 
         EbookCourseModel ebookCourseModel = list.get(position);
-        holder.course_name.setText(ebookCourseModel.getCourseName());
-        holder.selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
-        holder.actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
 
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(holder.imageView);
+        holder.course_name.setText(ebookCourseModel.getCourseName());
+        holder.selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
+
+        if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {
+            holder.actual_price.setVisibility(View.INVISIBLE);
+            holder.view.setVisibility(View.INVISIBLE);
+        } else {
+            holder.actual_price.setVisibility(View.VISIBLE);
+            holder.view.setVisibility(View.VISIBLE);
+            holder.actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
+        }
 
     }
 
@@ -55,7 +63,8 @@ public class EmockskAdpter extends RecyclerView.Adapter<EmockskAdpter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView course_name, selling_price, actual_price, pdfnumber;
-        ImageView imageView;
+        public ImageView imageView;
+        public View view;
         onClickListener onClickListener;
 
         public ViewHolder(View itemView, onClickListener onClickListener) {
@@ -65,6 +74,7 @@ public class EmockskAdpter extends RecyclerView.Adapter<EmockskAdpter.ViewHolder
             course_name = itemView.findViewById(R.id.course_name);
             selling_price = itemView.findViewById(R.id.selling_price);
             actual_price = itemView.findViewById(R.id.actual_price);
+            view = itemView.findViewById(R.id.view);
 
             this.onClickListener = onClickListener;
 
