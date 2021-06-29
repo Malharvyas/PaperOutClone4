@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.AboutUsFragment"
+    android:padding="25dp"
+    android:background="@color/bg_color">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WHAT WE DO &amp; WHAT WE ARE ?"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/text1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text1"
+        android:text="Welcome to HSSC SUPERMOCKS - The most trusted HSSC exam preparation app for competitive exams where Daily you can learn more than 500 Questions per day. HSSC SUPERMOCKS offer a flawless Detailed HSSC  Test Series for all major Haryana government exams. We’ve introduced Free Practice Set, free mock tests and personalized Detailes Answer Sheet with Extra Facts."
+        android:textSize="16sp"
+        android:id="@+id/text2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text2"
+        android:text="Install the HSSC SUPERMOCKS app today &amp; get the latest HSSC exam-related PDF. It is designed to build your confidence and Make your HSSC Exam Practice easy."
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/text3"/>
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/text3"-->
+<!--        android:text="We've introduced free Practice Set, free mock tests and personalised Detailed Answer Sheet with Extra Facts."-->
+<!--        android:textSize="16sp"-->
+<!--        android:id="@+id/text4"/>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/text4"-->
+<!--        android:text="Get the Paid Services today &amp; get the latest HSSC exam related PDF. It is designed to build your confidence and Make your HSSC Exam Practice easy."-->
+<!--        android:textSize="16sp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:id="@+id/text5"/>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

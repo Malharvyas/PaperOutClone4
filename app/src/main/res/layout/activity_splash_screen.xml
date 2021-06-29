@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashScreen"
+    android:padding="30dp"
+    android:fitsSystemWindows="true"
+    android:background="@color/bg_color">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="120dp"
+                android:src="@drawable/logo2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FREE SERVICES"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logo"
+                android:layout_marginTop="30sp"
+                android:id="@+id/text3"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Daily HSSC Practice set of 100 Questions."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text3"
+                android:textSize="12sp"
+                android:id="@+id/text4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[ Haryana GK, National GK, Science, Computer, Hindi, English, Maths, Reasoning and Exam specific.]"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text4"
+                android:textSize="12sp"
+                android:id="@+id/text5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monthly 22 Practice Sets for Practice."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text5"
+                android:textSize="12sp"
+                android:id="@+id/text6"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TRAIL PAID - "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text6"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="30sp"
+                android:id="@+id/text7"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15 Rs Weekly"
+                android:textColor="@color/main_color"
+                android:textSize="22sp"
+                app:layout_constraintLeft_toRightOf="@id/text7"
+                app:layout_constraintTop_toBottomOf="@id/text6"
+                android:layout_marginTop="30sp"
+                android:id="@+id/text8"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Practice more than 500 unique questions daily."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text8"
+                android:textSize="12sp"
+                android:id="@+id/text9"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Detailed Answersheet of Daily Practice Set."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text9"
+                android:textSize="12sp"
+                android:id="@+id/text10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learn and Revise all practice sets."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text10"
+                android:textSize="12sp"
+                android:id="@+id/text11"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAID SERVICE - "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text11"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="30sp"
+                android:id="@+id/text12"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25 Rs Monthly"
+                android:textColor="@color/main_color"
+                android:textSize="22sp"
+                app:layout_constraintLeft_toRightOf="@id/text12"
+                app:layout_constraintTop_toBottomOf="@id/text11"
+                android:layout_marginTop="30sp"
+                android:id="@+id/text13"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Practice more than 500 unique questions daily."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text13"
+                android:textSize="12sp"
+                android:id="@+id/text14"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Detailed Answersheet of Daily Practice Set."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text14"
+                android:textSize="12sp"
+                android:id="@+id/text15"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learn and Revise all practice sets."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text15"
+                android:textSize="12sp"
+                android:id="@+id/text16"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SPECIAL OFFER - "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text16"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="30sp"
+                android:id="@+id/text17"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="149 Rs Yearly"
+                android:textColor="@color/main_color"
+                android:textSize="22sp"
+                app:layout_constraintLeft_toRightOf="@id/text17"
+                app:layout_constraintTop_toBottomOf="@id/text16"
+                android:layout_marginTop="30sp"
+                android:id="@+id/text18"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Practice more than 500 unique questions daily."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text18"
+                android:textSize="12sp"
+                android:id="@+id/text19"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Detailed Answersheet of Daily Practice Set."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text19"
+                android:textSize="12sp"
+                android:id="@+id/text20"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learn and Revise all practice sets."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text20"
+                android:textSize="12sp"
+                android:id="@+id/text21"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:backgroundTint="@color/button1"
+                app:layout_constraintTop_toBottomOf="@id/text21"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/splash_enter"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

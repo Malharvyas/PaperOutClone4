@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Hssc Supermocks</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="haryana_gk">Haryana GK</string>
+    <string name="history">History</string>
+    <string name="geography">Geography</string>
+    <string name="polity">Polity</string>
+    <string name="eco">Economics</string>
+    <string name="bio">Biology</string>
+    <string name="phy">Physics</string>
+    <string name="chem">Chemistry</string>
+    <string name="static_gk">Static GK</string>
+
+    <string name="alert_title"><b>Confirm Sign Out</b></string>
+    <string name="alert_title2"><b>Plan Not Purchased</b></string>
+</resources>

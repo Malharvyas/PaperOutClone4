@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:id="@+id/nav_about"
+            android:title="About Us"
+            app:showAsAction="never"/>
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile"
+            app:showAsAction="never"/>
+        <item
+            android:id="@+id/nav_membership"
+            android:title="Membership Plan"
+            app:showAsAction="never"/>
+        <item
+            android:id="@+id/nav_shareus"
+            android:title="Share Us"
+            app:showAsAction="never"/>
+        <item
+            android:id="@+id/nav_contact"
+            android:title="Contact Us"
+            app:showAsAction="never"/>
+        <item
+            android:id="@+id/logout"
+            android:title="Logout"
+            app:showAsAction="never"/>
+
+</menu>
