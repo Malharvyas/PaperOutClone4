@@ -1,11 +1,14 @@
 package com.example.paperoutclone4;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -46,13 +49,20 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
     String course_id;
     TextView selling_price, course_name, actual_price;
     ProgressBar progressBar;
-    private ImageView imageView;
+    private ImageView imageView, btnBackSpace;
     EbookCourseModel ebookCourseModel;
+    Toolbar toolbar;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.getOverflowIcon().setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
 
         SharedPreferences sharedPreferences = getSharedPreferences("userpref", Context.MODE_PRIVATE);
         s_id = sharedPreferences.getString("sid", "");
@@ -63,14 +73,31 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         imageView = findViewById(R.id.imageView);
         course_name = findViewById(R.id.course_name);
         actual_price = findViewById(R.id.actual_price);
+        btnBackSpace = findViewById(R.id.btnBackSpace);
+        view = findViewById(R.id.view);
 
         Intent i = getIntent();
         ebookCourseModel = (EbookCourseModel) i.getSerializableExtra("ebook");
 
-        course_name.setText("\u20B9" + " " + ebookCourseModel.getCourseName());
-        actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
-        selling_price.setText(ebookCourseModel.getPrice());
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(imageView);
+        course_name.setText(ebookCourseModel.getCourseName());
+        selling_price.setText(ebookCourseModel.getPrice());
+
+        if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {
+            actual_price.setVisibility(View.INVISIBLE);
+            view.setVisibility(View.INVISIBLE);
+        } else {
+            actual_price.setVisibility(View.VISIBLE);
+            view.setVisibility(View.VISIBLE);
+            actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
+        }
+
+        btnBackSpace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         buy.setOnClickListener(new View.OnClickListener() {
             @Override

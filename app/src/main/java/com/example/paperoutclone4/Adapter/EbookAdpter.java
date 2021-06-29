@@ -41,10 +41,17 @@ public class EbookAdpter extends RecyclerView.Adapter<EbookAdpter.ViewHolder> {
         EbookCourseModel ebookCourseModel = list.get(position);
         holder.course_name.setText(ebookCourseModel.getCourseName());
         holder.selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
-        holder.actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
+
+        if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {
+            holder.actual_price.setVisibility(View.INVISIBLE);
+            holder.view.setVisibility(View.INVISIBLE);
+        } else {
+            holder.actual_price.setVisibility(View.VISIBLE);
+            holder.view.setVisibility(View.VISIBLE);
+            holder.actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
+        }
 
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(holder.imageView);
-
 
     }
 
@@ -57,6 +64,7 @@ public class EbookAdpter extends RecyclerView.Adapter<EbookAdpter.ViewHolder> {
 
         public TextView course_name, selling_price, actual_price, pdfnumber;
         public ImageView imageView;
+        public View view;
         onClickListener onClickListener;
 
         public ViewHolder(View itemView, onClickListener onClickListener) {
@@ -66,6 +74,7 @@ public class EbookAdpter extends RecyclerView.Adapter<EbookAdpter.ViewHolder> {
             course_name = itemView.findViewById(R.id.course_name);
             selling_price = itemView.findViewById(R.id.selling_price);
             actual_price = itemView.findViewById(R.id.actual_price);
+            view = itemView.findViewById(R.id.view);
 
             this.onClickListener = onClickListener;
 
