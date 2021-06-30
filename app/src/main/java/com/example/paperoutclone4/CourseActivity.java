@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.paperoutclone4.Class.BaseUrl;
 import com.example.paperoutclone4.Model.EbookCourseModel;
 import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CourseActivity extends AppCompatActivity {
+public class CourseActivity extends AppCompatActivity implements PaymentResultListener {
 
     Button buy;
     String username, useremail, usermobile, price, s_id, url = "";
@@ -121,18 +122,17 @@ public class CourseActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
         String payment_status = sharedPreferences.getString("course_payment", "0");
-        String selected = sharedPreferences.getString("selected", "0");
 
         if (payment_status.equals("1")) {
-            activateplan(s_id, selected);
+            activateplan(s_id);
         }
     }
 
-    private void activateplan(String s_id, String selected) {
+    private void activateplan(String s_id) {
         progressBar.setVisibility(View.VISIBLE);
         BaseUrl b = new BaseUrl();
         url = b.url;
-        url = url.concat("eknumber/api/PlanActive/plan_active");
+        url = url.concat("eknumber/api/Course/enrol");
         RequestQueue volleyRequestQueue = Volley.newRequestQueue(CourseActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -147,6 +147,7 @@ public class CourseActivity extends AppCompatActivity {
                                 json = new JSONObject(String.valueOf(response));
                                 Boolean status = json.getBoolean("status");
                                 if (status == true) {
+
                                     String msg = json.getString("message");
                                     Toast.makeText(CourseActivity.this, msg, Toast.LENGTH_SHORT).show();
                                     SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
@@ -191,7 +192,9 @@ public class CourseActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("sid", s_id);
-                params.put("s_planid", selected);
+                params.put("course_id", ebookCourseModel.getCourseId());
+                params.put("price", ebookCourseModel.getPrice());
+                params.put("days", ebookCourseModel.getDays());
                 return params;
             }
 
@@ -214,4 +217,43 @@ public class CourseActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         );
     }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        Checkout.clearUserData(getApplicationContext());
+        SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("course_payment", "1");
+        editor.apply();
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        Checkout.clearUserData(getApplicationContext());
+        SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("course_payment", "0");
+        editor.apply();
+        switch (i) {
+            case Checkout.NETWORK_ERROR: {
+                Toast.makeText(getApplicationContext(), "There was an network error..please try after sometime", Toast.LENGTH_SHORT).show();
+            }
+            break;
+            case Checkout.INVALID_OPTIONS: {
+                Toast.makeText(getApplicationContext(), "User data is incorrect", Toast.LENGTH_SHORT).show();
+            }
+            break;
+            case Checkout.PAYMENT_CANCELED: {
+                Toast.makeText(getApplicationContext(), "Canceled!!", Toast.LENGTH_SHORT).show();
+            }
+            break;
+            case Checkout.TLS_ERROR: {
+                Toast.makeText(getApplicationContext(), "This device is not supported for online payment", Toast.LENGTH_SHORT).show();
+            }
+            break;
+            default:
+                Toast.makeText(getApplicationContext(), "Error : " + s, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

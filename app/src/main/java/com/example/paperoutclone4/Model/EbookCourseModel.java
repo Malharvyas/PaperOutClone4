@@ -43,6 +43,17 @@ public class EbookCourseModel implements Serializable {
     @SerializedName("validity")
     @Expose
     private String validity;
+    @SerializedName("days")
+    @Expose
+    private String days;
+
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
+    }
 
     public String getCourseId() {
         return courseId;
