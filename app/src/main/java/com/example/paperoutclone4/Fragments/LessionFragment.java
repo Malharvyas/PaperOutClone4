@@ -4,6 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.ClientError;
@@ -27,48 +26,38 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.paperoutclone4.Adapter.CourseAdapter;
-import com.example.paperoutclone4.Adapter.EbookAdpter;
 import com.example.paperoutclone4.Adapter.PDFAdapter;
 import com.example.paperoutclone4.Class.BaseUrl;
-import com.example.paperoutclone4.Class.GridSpacing;
-import com.example.paperoutclone4.LessionActivity;
-import com.example.paperoutclone4.Model.EbookCourseModel;
-import com.example.paperoutclone4.Model.MyCourse;
 import com.example.paperoutclone4.Model.MyPDF;
 import com.example.paperoutclone4.PDFView;
 import com.example.paperoutclone4.R;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class MyPDFFragment extends Fragment implements CourseAdapter.onClickListener{
+public class LessionFragment extends Fragment implements PDFAdapter.onClickListener {
 
     private boolean isViewShown = false;
     String url = "",s_id = "";
     RecyclerView answers_recycler;
     ProgressBar progressBar;
     RecyclerView.Adapter adapter;
-    List<MyCourse> courselist = new ArrayList<>();
-    List<MyPDF> lessoionlist = new ArrayList<>();
+    List<MyPDF> pdflist = new ArrayList<>();
 
-    public MyPDFFragment() {
+    public LessionFragment() {
         // Required empty public constructor
     }
 
-    public static MyPDFFragment newInstance(String param1, String param2) {
-        MyPDFFragment fragment = new MyPDFFragment();
+
+    public static LessionFragment newInstance(String param1, String param2) {
+        LessionFragment fragment = new LessionFragment();
         return fragment;
     }
 
@@ -78,24 +67,23 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userpref", Context.MODE_PRIVATE);
         s_id = sharedPreferences.getString("sid", "");
 
-        adapter = new CourseAdapter(getContext(), courselist, this);
+        adapter = new PDFAdapter(getContext(), pdflist, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_mypdf, container, false);
+        View v = inflater.inflate(R.layout.fragment_lession, container, false);
         answers_recycler = v.findViewById(R.id.answers_recycler);
         progressBar = v.findViewById(R.id.progressBar);
 
         answers_recycler.setHasFixedSize(true);
         answers_recycler.setItemAnimator(new DefaultItemAnimator());
         answers_recycler.setAdapter(adapter);
-        
+
         fetchData();
         return v;
     }
-
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -129,7 +117,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                         BaseUrl b = new BaseUrl();
                         url = b.url;
                         if (response != null) {
-                            courselist.clear();
+                            pdflist.clear();
                             JSONObject json = null;
 
                             try {
@@ -137,53 +125,25 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                                 Boolean status = json.getBoolean("status");
                                 if (status) {
                                     JSONArray datarr = json.getJSONArray("data");
-                                    for(int j = 0; j < datarr.length(); j++)
+                                    JSONObject course = datarr.getJSONObject(0);
+                                    JSONArray lessions = course.getJSONArray("lession");
+                                    for(int i = 0; i < lessions.length(); i++)
                                     {
-                                        MyCourse model = new MyCourse();
-                                        JSONObject course = datarr.getJSONObject(j);
-                                        String enrole_id = course.getString("enrole_id");
-                                        String course_id = course.getString("course_id");
-                                        String price = course.getString("price");
-                                        String start_date = course.getString("start_date");
-                                        String end_date = course.getString("end_date");
-                                        String days = course.getString("days");
-                                        String sid = course.getString("sid");
-                                        String course_iamge = course.getString("course_iamge");
-                                        String course_name = course.getString("course_name");
+                                        MyPDF model = new MyPDF();
+                                        JSONObject lsobj = lessions.getJSONObject(i);
+                                        String lesion_id = lsobj.getString("lesion_id");
+                                        String course_id = lsobj.getString("course_id");
+                                        String total_question = lsobj.getString("total_question");
+                                        String name = lsobj.getString("name");
+                                        String pdf_url = lsobj.getString("pdf_url");
 
-                                        JSONArray lessions = course.getJSONArray("lession");
-
-                                        for(int i = 0; i < lessions.length(); i++)
-                                        {
-                                            MyPDF model2 = new MyPDF();
-                                            JSONObject lsobj = lessions.getJSONObject(i);
-                                            String lesion_id = lsobj.getString("lesion_id");
-                                            String course_id1 = lsobj.getString("course_id");
-                                            String total_question = lsobj.getString("total_question");
-                                            String name = lsobj.getString("name");
-                                            String pdf_url = lsobj.getString("pdf_url");
-
-                                            model2.setLesion_id(lesion_id);
-                                            model2.setCourse_id(course_id1);
-                                            model2.setTotal_question(total_question);
-                                            model2.setName(name);
-                                            model2.setPdf_url(pdf_url);
-
-                                            lessoionlist.add(model2);
-                                        }
-
-                                        model.setEnrole_id(enrole_id);
+                                        model.setLesion_id(lesion_id);
                                         model.setCourse_id(course_id);
-                                        model.setPrice(price);
-                                        model.setStart_date(start_date);
-                                        model.setEnd_date(end_date);
-                                        model.setDays(days);
-                                        model.setSid(sid);
-                                        model.setCourse_name(course_name);
-                                        model.setCourse_iamge(course_iamge);
-                                        model.setLessions(lessoionlist);
+                                        model.setTotal_question(total_question);
+                                        model.setName(name);
+                                        model.setPdf_url(pdf_url);
 
-                                        courselist.add(model);
+                                        pdflist.add(model);
                                     }
                                 }
 
@@ -222,7 +182,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("sid", "1");
+                params.put("sid", s_id);
                 return params;
             }
 
@@ -248,11 +208,13 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
 
     @Override
     public void onClicked(int position) {
-        MyCourse p = courselist.get(position);
-        Intent i = new Intent(getContext(), LessionActivity.class);
-        List<MyPDF> lessions = p.getLessions();
-        String stlist = new Gson().toJson(lessions);
-        i.putExtra("lessions", stlist);
+        MyPDF p = pdflist.get(position);
+        String pdf = String.valueOf(p.getPdf_url());
+        String pname = String.valueOf(p.getName());
+        Intent i = new Intent(getContext(), PDFView.class);
+        i.putExtra("pdf_url", pdf);
+        i.putExtra("pdf_name", pname);
+        i.putExtra("id", "answer");
         startActivity(i);
     }
 }
