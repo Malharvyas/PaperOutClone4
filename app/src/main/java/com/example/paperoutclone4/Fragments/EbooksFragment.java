@@ -54,6 +54,7 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
     RecyclerView image_recycler;
     ProgressBar progressBar;
     RecyclerView.Adapter adapter;
+    private boolean isViewShown = false;
 
     public EbooksFragment() {
         // Required empty public constructor
@@ -83,10 +84,25 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
         image_recycler.setAdapter(adapter);
         image_recycler.addItemDecoration(new GridSpacing(5));
 
+        fetchData();
 
-        getCourse(type);
 
         return v;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getView() != null && isVisibleToUser) {
+            isViewShown = true; // fetchdata() contains logic to show data when page is selected mostly asynctask to fill the data
+            fetchData();
+        } else {
+            isViewShown = false;
+        }
+    }
+
+    private void fetchData() {
+        getCourse(type);
     }
 
     private void getCourse(String type) {

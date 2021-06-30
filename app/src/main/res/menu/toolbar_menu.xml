@@ -11,10 +11,6 @@
             android:title="Profile"
             app:showAsAction="never"/>
         <item
-            android:id="@+id/nav_membership"
-            android:title="Membership Plan"
-            app:showAsAction="never"/>
-        <item
             android:id="@+id/nav_shareus"
             android:title="Share Us"
             app:showAsAction="never"/>

@@ -42,7 +42,7 @@ public class EmockskAdpter extends RecyclerView.Adapter<EmockskAdpter.ViewHolder
 
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(holder.imageView);
         holder.course_name.setText(ebookCourseModel.getCourseName());
-        holder.selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
+        holder.selling_price.setText("\u20B9" + ebookCourseModel.getPrice());
 
         if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {
             holder.actual_price.setVisibility(View.INVISIBLE);
@@ -50,7 +50,7 @@ public class EmockskAdpter extends RecyclerView.Adapter<EmockskAdpter.ViewHolder
         } else {
             holder.actual_price.setVisibility(View.VISIBLE);
             holder.view.setVisibility(View.VISIBLE);
-            holder.actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
+            holder.actual_price.setText("\u20B9" + ebookCourseModel.getDiscountedPrice());
         }
 
     }

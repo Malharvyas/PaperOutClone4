@@ -37,12 +37,6 @@ public class OptionsMenu extends AppCompatActivity implements PaymentResultListe
         sub_id = i.getExtras().getString("id");
 
         switch (fragment) {
-            case "membership": {
-                tabLayout.getTabAt(0).setText("MEMBERSHIP PLAN");
-                target_fragment = new ProfileFragment();
-                String frag_tag = "Membership";
-                showfragment(target_fragment, frag_tag);
-            }
             case "profile": {
                 tabLayout.getTabAt(0).setText("PROFILE");
                 target_fragment = new ProfileFragment();

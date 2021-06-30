@@ -43,20 +43,31 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="20dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <Button
+                android:id="@+id/buy_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/button1"
+                android:text="Buy Now"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
-                app:layout_constraintBottom_toTopOf="@id/guideline4"
+                app:layout_constraintBottom_toTopOf="@id/buy_course"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/guideline3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -69,6 +80,7 @@
                 android:maxLines="2"
                 android:minLines="2"
                 android:text="Course Name in two lines"
+                android:textStyle="bold"
                 android:textColor="@color/main_color"
                 app:layout_constraintLeft_toRightOf="@id/guideline3"
                 app:layout_constraintRight_toRightOf="parent"
@@ -109,11 +121,13 @@
 
             <View
                 android:id="@+id/view1"
-                android:layout_width="150dp"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="10sp"
                 android:background="#757575"
+                android:layout_marginHorizontal="7dp"
                 app:layout_constraintLeft_toLeftOf="@id/guideline3"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/selling_price" />
 
             <TextView
@@ -151,15 +165,7 @@
                 app:layout_constraintTop_toBottomOf="@id/description" />
 
 
-            <Button
-                android:id="@+id/buy_course"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/button1"
-                android:text="Buy Now"
-                app:layout_constraintTop_toBottomOf="@id/guideline4" />
+
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -187,5 +193,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,7 @@ public class EbookAdpter extends RecyclerView.Adapter<EbookAdpter.ViewHolder> {
 
         EbookCourseModel ebookCourseModel = list.get(position);
         holder.course_name.setText(ebookCourseModel.getCourseName());
-        holder.selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
+        holder.selling_price.setText("\u20B9" + ebookCourseModel.getPrice());
 
         if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {
             holder.actual_price.setVisibility(View.INVISIBLE);
@@ -48,7 +48,7 @@ public class EbookAdpter extends RecyclerView.Adapter<EbookAdpter.ViewHolder> {
         } else {
             holder.actual_price.setVisibility(View.VISIBLE);
             holder.view.setVisibility(View.VISIBLE);
-            holder.actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
+            holder.actual_price.setText("\u20B9" + ebookCourseModel.getDiscountedPrice());
         }
 
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(holder.imageView);

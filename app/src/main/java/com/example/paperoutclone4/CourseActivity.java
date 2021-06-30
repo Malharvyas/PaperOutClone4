@@ -83,7 +83,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
 
         Picasso.get().load(ebookCourseModel.getCourseIamge()).fit().into(imageView);
         course_name.setText(ebookCourseModel.getCourseName());
-        selling_price.setText("\u20B9" + " " + ebookCourseModel.getPrice());
+        selling_price.setText("\u20B9" + ebookCourseModel.getPrice());
         description.setText(ebookCourseModel.getShortDescription());
         tvValidity.setText(ebookCourseModel.getValidity());
 
@@ -93,7 +93,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         } else {
             actual_price.setVisibility(View.VISIBLE);
             view.setVisibility(View.VISIBLE);
-            actual_price.setText("\u20B9" + " " + ebookCourseModel.getDiscountedPrice());
+            actual_price.setText("\u20B9" + ebookCourseModel.getDiscountedPrice());
         }
 
         btnBackSpace.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +120,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         useremail = userpref.getString("s_email", "NA");
         usermobile = userpref.getString("s_mobile", "NA");
 
-        int amount = Integer.parseInt(price);
+        int amount = Integer.parseInt(ebookCourseModel.getPrice());
         amount = amount * 100;
 
         Checkout.preload(this);

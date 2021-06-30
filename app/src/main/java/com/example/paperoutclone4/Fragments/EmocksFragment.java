@@ -54,6 +54,7 @@ public class EmocksFragment extends Fragment implements EmockskAdpter.onClickLis
     RecyclerView questions_recycler;
     ProgressBar progressBar;
     RecyclerView.Adapter adapter;
+    private boolean isViewShown = false;
 
     public EmocksFragment() {
         // Required empty public constructor
@@ -83,9 +84,24 @@ public class EmocksFragment extends Fragment implements EmockskAdpter.onClickLis
         questions_recycler.setAdapter(adapter);
         questions_recycler.addItemDecoration(new GridSpacing(5));
 
-        getCourse(type);
+        fetchData();
 
         return v;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getView() != null && isVisibleToUser) {
+            isViewShown = true; // fetchdata() contains logic to show data when page is selected mostly asynctask to fill the data
+            fetchData();
+        } else {
+            isViewShown = false;
+        }
+    }
+
+    private void fetchData() {
+        getCourse(type);
     }
 
     private void getCourse(String type) {

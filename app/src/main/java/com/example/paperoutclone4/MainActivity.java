@@ -125,13 +125,6 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_membership:
-            {
-                Intent i = new Intent(getApplicationContext(),OptionsMenu.class);
-                i.putExtra("fragment","membership");
-                startActivity(i);
-            }
-            break;
             case R.id.nav_profile:
             {
                 Intent i = new Intent(getApplicationContext(),OptionsMenu.class);
