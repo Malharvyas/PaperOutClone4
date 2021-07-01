@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.example.paperoutclone4.Adapter.PDFAdapter;
 import com.example.paperoutclone4.Model.MyPDF;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,7 +26,8 @@ public class LessionActivity extends AppCompatActivity implements PDFAdapter.onC
     ProgressBar progressBar;
     RecyclerView.Adapter adapter;
     List<MyPDF> pdflist = new ArrayList<>();
-    String list;
+    String list,course;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,10 @@ public class LessionActivity extends AppCompatActivity implements PDFAdapter.onC
 
         Intent i = getIntent();
         list = i.getExtras().getString("lessions");
+        course = i.getExtras().getString("course");
+
+        tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.getTabAt(0).setText(course);
 
         pdflist = new Gson().fromJson(list,new TypeToken<List<MyPDF>>(){}.getType());
 

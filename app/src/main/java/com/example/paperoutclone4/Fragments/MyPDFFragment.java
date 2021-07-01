@@ -60,8 +60,8 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
     RecyclerView answers_recycler;
     ProgressBar progressBar;
     RecyclerView.Adapter adapter;
-    List<MyCourse> courselist = new ArrayList<>();
-    List<MyPDF> lessoionlist = new ArrayList<>();
+    List<MyCourse> courselist ;
+    List<MyPDF> lessoionlist ;
 
     public MyPDFFragment() {
         // Required empty public constructor
@@ -78,6 +78,8 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userpref", Context.MODE_PRIVATE);
         s_id = sharedPreferences.getString("sid", "");
 
+        courselist = new ArrayList<>();
+        lessoionlist = new ArrayList<>();
         adapter = new CourseAdapter(getContext(), courselist, this);
     }
 
@@ -130,6 +132,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                         url = b.url;
                         if (response != null) {
                             courselist.clear();
+                            lessoionlist.clear();
                             JSONObject json = null;
 
                             try {
@@ -139,6 +142,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                                     JSONArray datarr = json.getJSONArray("data");
                                     for(int j = 0; j < datarr.length(); j++)
                                     {
+                                        lessoionlist.clear();
                                         MyCourse model = new MyCourse();
                                         JSONObject course = datarr.getJSONObject(j);
                                         String enrole_id = course.getString("enrole_id");
@@ -150,6 +154,8 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                                         String sid = course.getString("sid");
                                         String course_iamge = course.getString("course_iamge");
                                         String course_name = course.getString("course_name");
+                                        String discounted_price = course.getString("discounted_price");
+                                        String short_description = course.getString("short_description");
 
                                         JSONArray lessions = course.getJSONArray("lession");
 
@@ -162,12 +168,14 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                                             String total_question = lsobj.getString("total_question");
                                             String name = lsobj.getString("name");
                                             String pdf_url = lsobj.getString("pdf_url");
+                                            String created_date = lsobj.getString("created_date");
 
                                             model2.setLesion_id(lesion_id);
                                             model2.setCourse_id(course_id1);
                                             model2.setTotal_question(total_question);
                                             model2.setName(name);
                                             model2.setPdf_url(pdf_url);
+                                            model2.setCreated_date(created_date);
 
                                             lessoionlist.add(model2);
                                         }
@@ -182,9 +190,19 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                                         model.setCourse_name(course_name);
                                         model.setCourse_iamge(course_iamge);
                                         model.setLessions(lessoionlist);
+                                        model.setShort_description(short_description);
+                                        model.setDiscounted_price(discounted_price);
 
                                         courselist.add(model);
+
                                     }
+
+//                                    for(int k = 0; k < courselist.size(); k++)
+//                                    {
+//                                        MyCourse c = courselist.get(k);
+//                                        List<MyPDF> p = c.getLessions();
+//                                        Toast.makeText(getContext(),""+c.getLessions().size(),Toast.LENGTH_SHORT).show();
+//                                    }
                                 }
 
                             } catch (JSONException e) {
@@ -222,7 +240,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("sid", "1");
+                params.put("sid", s_id);
                 return params;
             }
 
@@ -250,9 +268,12 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
     public void onClicked(int position) {
         MyCourse p = courselist.get(position);
         Intent i = new Intent(getContext(), LessionActivity.class);
-        List<MyPDF> lessions = p.getLessions();
-        String stlist = new Gson().toJson(lessions);
+        List<MyPDF> lession = p.getLessions();
+//        String c = p.getEnrole_id();
+//        Toast.makeText(getContext(),""+lession.size(),Toast.LENGTH_SHORT).show();
+        String stlist = new Gson().toJson(lession);
         i.putExtra("lessions", stlist);
+        i.putExtra("course",p.getCourse_name());
         startActivity(i);
     }
 }

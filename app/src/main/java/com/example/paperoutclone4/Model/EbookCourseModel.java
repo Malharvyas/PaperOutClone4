@@ -46,6 +46,17 @@ public class EbookCourseModel implements Serializable {
     @SerializedName("days")
     @Expose
     private String days;
+    @SerializedName("is_active")
+    @Expose
+    private String is_active;
+
+    public String getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(String is_active) {
+        this.is_active = is_active;
+    }
 
     public String getDays() {
         return days;

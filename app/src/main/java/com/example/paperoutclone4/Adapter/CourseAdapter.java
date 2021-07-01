@@ -44,20 +44,19 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
         holder.course_name.setText(model.getCourse_name());
         holder.selling_price.setText("\u20B9" + model.getPrice());
-        holder.actual_price.setText("\u20B910");
 
-//        if (model.getDiscountedPrice().equals("null") || model.getDiscountedPrice().equals("0.00")) {
-//            holder.actual_price.setVisibility(View.INVISIBLE);
-//            holder.view.setVisibility(View.INVISIBLE);
-//        } else {
-//            holder.actual_price.setVisibility(View.VISIBLE);
-//            holder.view.setVisibility(View.VISIBLE);
-//            holder.actual_price.setText("\u20B9" + model.getDiscountedPrice());
-//        }
+        if (model.getDiscounted_price().equals("null") || model.getDiscounted_price().equals("0.00")) {
+            holder.actual_price.setVisibility(View.INVISIBLE);
+            holder.view.setVisibility(View.INVISIBLE);
+        } else {
+            holder.actual_price.setVisibility(View.VISIBLE);
+            holder.view.setVisibility(View.VISIBLE);
+            holder.actual_price.setText("\u20B9" + model.getDiscounted_price());
+        }
 
         Picasso.get().load(model.getCourse_iamge()).fit().into(holder.imageView);
 
-//        holder.description.setText(model.);
+        holder.description.setText(model.getShort_description());
 
         holder.tvValidity.setText(model.getDays() + " Days");
     }

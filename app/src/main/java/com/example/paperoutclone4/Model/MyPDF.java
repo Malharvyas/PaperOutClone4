@@ -12,16 +12,26 @@ public class MyPDF{
     public String total_question;
     public String name;
     public String pdf_url;
+    public String created_date;
 
     public MyPDF() {
     }
 
-    public MyPDF(String lesion_id, String course_id, String total_question, String name, String pdf_url) {
+    public MyPDF(String lesion_id, String course_id, String total_question, String name, String pdf_url, String created_date) {
         this.lesion_id = lesion_id;
         this.course_id = course_id;
         this.total_question = total_question;
         this.name = name;
         this.pdf_url = pdf_url;
+        this.created_date = created_date;
+    }
+
+    public String getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(String created_date) {
+        this.created_date = created_date;
     }
 
     public String getLesion_id() {

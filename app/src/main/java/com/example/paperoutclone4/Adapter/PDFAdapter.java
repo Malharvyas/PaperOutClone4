@@ -1,6 +1,7 @@
 package com.example.paperoutclone4.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,18 +31,27 @@ public class PDFAdapter extends RecyclerView.Adapter<PDFAdapter.ViewHolder>{
     @NonNull
     @Override
     public PDFAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.pdflayout, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.pdflayout2, parent, false);
         return new ViewHolder(v, monclicklistener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PDFAdapter.ViewHolder holder, int position) {
 
+        if(position % 2 == 0)
+        {
+
+        }
+        else
+        {
+            holder.itemView.setBackgroundColor(Color.parseColor("#f6f7f7"));
+        }
+
         MyPDF model = list.get(position);
 
         holder.pdf_name.setText(model.getName());
-        holder.pdf_date.setText("15 May");
-        holder.total_ques.setText(model.getTotal_question());
+        holder.pdf_date.setText(model.getCreated_date());
+        holder.total_ques.setText("Total Questions - "+model.getTotal_question());
     }
 
     @Override

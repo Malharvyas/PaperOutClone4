@@ -1,6 +1,8 @@
 package com.example.paperoutclone4.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -50,7 +52,7 @@ import java.util.Map;
 public class EbooksFragment extends Fragment implements EbookAdpter.onClickListener {
 
     List<EbookCourseModel> ebookCourseModelList = new ArrayList<>();
-    String url = "", type = "1";
+    String url = "", type = "1",s_id;
     RecyclerView image_recycler;
     ProgressBar progressBar;
     RecyclerView.Adapter adapter;
@@ -68,6 +70,10 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userpref", Context.MODE_PRIVATE);
+        s_id = sharedPreferences.getString("sid", "");
+
         adapter = new EbookAdpter(getContext(), ebookCourseModelList, this);
     }
 
@@ -102,10 +108,10 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
     }
 
     private void fetchData() {
-        getCourse(type);
+        getCourse(type,s_id);
     }
 
-    private void getCourse(String type) {
+    private void getCourse(String type, String s_id) {
         progressBar.setVisibility(View.VISIBLE);
         BaseUrl b = new BaseUrl();
         url = b.url;
@@ -175,6 +181,7 @@ public class EbooksFragment extends Fragment implements EbookAdpter.onClickListe
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("type", type);
+                params.put("sid", s_id);
                 return params;
             }
 

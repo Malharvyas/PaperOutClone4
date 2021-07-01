@@ -39,7 +39,14 @@ public class EbookAdpter extends RecyclerView.Adapter<EbookAdpter.ViewHolder> {
     public void onBindViewHolder(@NonNull EbookAdpter.ViewHolder holder, int position) {
 
         EbookCourseModel ebookCourseModel = list.get(position);
-        holder.course_name.setText(ebookCourseModel.getCourseName());
+        if(position == 1)
+        {
+            holder.course_name.setText("This is course name of two lines");
+        }
+        else{
+            holder.course_name.setText(ebookCourseModel.getCourseName());
+        }
+
         holder.selling_price.setText("\u20B9" + ebookCourseModel.getPrice());
 
         if (ebookCourseModel.getDiscountedPrice().equals("null") || ebookCourseModel.getDiscountedPrice().equals("0.00")) {

@@ -1,6 +1,8 @@
 package com.example.paperoutclone4.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -50,7 +52,7 @@ import java.util.Map;
 public class EmocksFragment extends Fragment implements EmockskAdpter.onClickListener {
 
     List<EbookCourseModel> ebookCourseModelList = new ArrayList<>();
-    String url = "", type = "2";
+    String url = "", type = "2",s_id;
     RecyclerView questions_recycler;
     ProgressBar progressBar;
     RecyclerView.Adapter adapter;
@@ -68,6 +70,9 @@ public class EmocksFragment extends Fragment implements EmockskAdpter.onClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userpref", Context.MODE_PRIVATE);
+        s_id = sharedPreferences.getString("sid", "");
+
         adapter = new EmockskAdpter(getContext(), ebookCourseModelList, this);
     }
 
@@ -101,10 +106,10 @@ public class EmocksFragment extends Fragment implements EmockskAdpter.onClickLis
     }
 
     private void fetchData() {
-        getCourse(type);
+        getCourse(type,s_id);
     }
 
-    private void getCourse(String type) {
+    private void getCourse(String type, String s_id) {
         progressBar.setVisibility(View.VISIBLE);
         BaseUrl b = new BaseUrl();
         url = b.url;
@@ -174,6 +179,7 @@ public class EmocksFragment extends Fragment implements EmockskAdpter.onClickLis
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("type", type);
+                params.put("sid", s_id);
                 return params;
             }
 

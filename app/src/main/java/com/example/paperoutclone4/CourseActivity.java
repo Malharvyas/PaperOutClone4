@@ -96,6 +96,11 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
             actual_price.setText("\u20B9" + ebookCourseModel.getDiscountedPrice());
         }
 
+        if(ebookCourseModel.getIs_active().equals("1"))
+        {
+            buy.setText("ACTIVATED");
+        }
+
         btnBackSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +114,9 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
                 if (buy.getText().toString().equals("Buy Now")) {
                     price = selling_price.getText().toString();
                     startrazorpay(price);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"This course is already active.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -154,7 +162,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
         String payment_status = sharedPreferences.getString("course_payment", "0");
 
-        if (payment_status.equals("1")) {
+        if (payment_status.equals("0")) {
             activateplan(s_id);
         }
     }

@@ -13,9 +13,11 @@ public class MyCourse{
     public String sid;
     public String course_iamge;
     public String course_name;
+    public String short_description;
+    public String discounted_price;
     public List<MyPDF> lessions;
 
-    public MyCourse(String enrole_id, String course_id, String price, String start_date, String end_date, String days, String sid, String course_iamge, String course_name, List<MyPDF> lessions) {
+    public MyCourse(String enrole_id, String course_id, String price, String start_date, String end_date, String days, String sid, String course_iamge, String course_name, String short_description, String discounted_price, List<MyPDF> lessions) {
         this.enrole_id = enrole_id;
         this.course_id = course_id;
         this.price = price;
@@ -25,10 +27,28 @@ public class MyCourse{
         this.sid = sid;
         this.course_iamge = course_iamge;
         this.course_name = course_name;
+        this.short_description = short_description;
+        this.discounted_price = discounted_price;
         this.lessions = lessions;
     }
 
     public MyCourse() {
+    }
+
+    public String getShort_description() {
+        return short_description;
+    }
+
+    public void setShort_description(String short_description) {
+        this.short_description = short_description;
+    }
+
+    public String getDiscounted_price() {
+        return discounted_price;
+    }
+
+    public void setDiscounted_price(String discounted_price) {
+        this.discounted_price = discounted_price;
     }
 
     public String getEnrole_id() {
