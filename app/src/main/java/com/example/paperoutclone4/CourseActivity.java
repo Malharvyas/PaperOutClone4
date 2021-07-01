@@ -3,6 +3,8 @@ package com.example.paperoutclone4;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -30,33 +33,42 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.paperoutclone4.Adapter.FreePDFAdapter;
 import com.example.paperoutclone4.Class.BaseUrl;
 import com.example.paperoutclone4.Model.EbookCourseModel;
+import com.example.paperoutclone4.Model.MyPDF;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class CourseActivity extends AppCompatActivity implements PaymentResultListener {
+public class CourseActivity extends AppCompatActivity implements PaymentResultListener,FreePDFAdapter.onClickListener {
 
     Button buy;
     String username, useremail, usermobile, price, s_id, url = "";
     String course_id;
     TextView selling_price, course_name, actual_price, description, tvValidity;
-    ProgressBar progressBar;
+    ProgressBar progressBar,progressBar2;
     private ImageView imageView, btnBackSpace;
     EbookCourseModel ebookCourseModel;
     Toolbar toolbar;
     private View view;
+    RecyclerView free_pdf;
+    RecyclerView.Adapter adapter;
+    List<MyPDF> pdflist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_course);
 
         toolbar = findViewById(R.id.toolbar);
@@ -70,6 +82,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         buy = findViewById(R.id.buy_course);
         selling_price = findViewById(R.id.selling_price);
         progressBar = findViewById(R.id.progressBar);
+        progressBar2 = findViewById(R.id.progressBar2);
         imageView = findViewById(R.id.imageView);
         course_name = findViewById(R.id.course_name);
         actual_price = findViewById(R.id.actual_price);
@@ -77,6 +90,7 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         view = findViewById(R.id.view);
         description = findViewById(R.id.description);
         tvValidity = findViewById(R.id.tvValidity);
+        free_pdf = findViewById(R.id.free_pdf);
 
         Intent i = getIntent();
         ebookCourseModel = (EbookCourseModel) i.getSerializableExtra("ebook");
@@ -101,6 +115,14 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
             buy.setText("ACTIVATED");
         }
 
+        pdflist = new ArrayList<>();
+        adapter = new FreePDFAdapter(getApplicationContext(),pdflist,this);
+        free_pdf.setHasFixedSize(true);
+        free_pdf.setItemAnimator(new DefaultItemAnimator());
+        free_pdf.setAdapter(adapter);
+
+        getfreepdf(ebookCourseModel.getCourseId());
+
         btnBackSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +142,111 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
                 }
             }
         });
+    }
+
+    private void getfreepdf(String courseId) {
+        progressBar2.setVisibility(View.VISIBLE);
+        BaseUrl b = new BaseUrl();
+        url = b.url;
+        url = url.concat("eknumber/api/Course/freepdf");
+        RequestQueue volleyRequestQueue = Volley.newRequestQueue(CourseActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressBar2.setVisibility(View.GONE);
+                        BaseUrl b = new BaseUrl();
+                        url = b.url;
+                        if (response != null) {
+                            JSONObject json = null;
+                            pdflist.clear();
+                            try {
+                                json = new JSONObject(String.valueOf(response));
+                                Boolean status = json.getBoolean("status");
+                                if (status == true) {
+                                    JSONArray data = json.getJSONArray("data");
+                                    for(int i = 0; i < data.length(); i++)
+                                    {
+                                        MyPDF obj = new MyPDF();
+                                        JSONObject pdfobj = data.getJSONObject(i);
+                                        String lesion_id = pdfobj.getString("lesion_id");
+                                        String course_id = pdfobj.getString("course_id");
+                                        String total_question = pdfobj.getString("total_question");
+                                        String name = pdfobj.getString("name");
+                                        String pdf_url = pdfobj.getString("pdf_url");
+                                        String created_date = pdfobj.getString("created_date");
+
+                                        obj.setLesion_id(lesion_id);
+                                        obj.setCourse_id(course_id);
+                                        obj.setTotal_question(total_question);
+                                        obj.setName(name);
+                                        obj.setPdf_url(pdf_url);
+                                        obj.setCreated_date(created_date);
+
+                                        pdflist.add(obj);
+                                    }
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressBar2.setVisibility(View.GONE);
+                BaseUrl b = new BaseUrl();
+                url = b.url;
+                if (error instanceof ClientError) {
+                    try {
+                        String responsebody = new String(error.networkResponse.data, "utf-8");
+                        JSONObject data = new JSONObject(responsebody);
+                        Boolean status = data.getBoolean("status");
+                        String stat = status.toString();
+                        if (stat.equals("false")) {
+                            String msg = data.getString("message");
+                            Toast.makeText(CourseActivity.this, msg, Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(CourseActivity.this, "Please make sure you have an active Internet connection.", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(CourseActivity.this, "Server is taking more than usual time to respond,please try after sometime.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CourseActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("course_id", courseId);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = "HRCET:.r*fm5D%d-Re45-)";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", auth);
+                headers.put("x-api-key", "HRCETCRACKER@123");
+//                headers.put("Content-Type", "application/form-data");
+                return headers;
+            }
+        };
+        volleyRequestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        );
     }
 
     private void startrazorpay(String price) {
@@ -160,9 +287,9 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
     public void onResume() {
         super.onResume();
         SharedPreferences sharedPreferences = getSharedPreferences("payment_details", Context.MODE_PRIVATE);
-        String payment_status = sharedPreferences.getString("course_payment", "0");
+        String payment_status = sharedPreferences.getString("course_payment", "2");
 
-        if (payment_status.equals("0")) {
+        if (payment_status.equals("1")) {
             activateplan(s_id);
         }
     }
@@ -295,4 +422,8 @@ public class CourseActivity extends AppCompatActivity implements PaymentResultLi
         }
     }
 
+    @Override
+    public void onClicked(int position) {
+
+    }
 }

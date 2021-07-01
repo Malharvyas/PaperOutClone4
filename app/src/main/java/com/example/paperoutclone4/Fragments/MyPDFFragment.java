@@ -79,7 +79,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
         s_id = sharedPreferences.getString("sid", "");
 
         courselist = new ArrayList<>();
-        lessoionlist = new ArrayList<>();
+
         adapter = new CourseAdapter(getContext(), courselist, this);
     }
 
@@ -132,7 +132,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                         url = b.url;
                         if (response != null) {
                             courselist.clear();
-                            lessoionlist.clear();
+//                            lessoionlist.clear();
                             JSONObject json = null;
 
                             try {
@@ -142,7 +142,7 @@ public class MyPDFFragment extends Fragment implements CourseAdapter.onClickList
                                     JSONArray datarr = json.getJSONArray("data");
                                     for(int j = 0; j < datarr.length(); j++)
                                     {
-                                        lessoionlist.clear();
+                                        lessoionlist = new ArrayList<>();
                                         MyCourse model = new MyCourse();
                                         JSONObject course = datarr.getJSONObject(j);
                                         String enrole_id = course.getString("enrole_id");

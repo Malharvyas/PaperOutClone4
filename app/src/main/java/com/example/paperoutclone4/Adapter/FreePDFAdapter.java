@@ -1,0 +1,88 @@
+package com.example.paperoutclone4.Adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.paperoutclone4.Model.MyPDF;
+import com.example.paperoutclone4.R;
+
+import java.util.List;
+
+public class FreePDFAdapter extends RecyclerView.Adapter<FreePDFAdapter.ViewHolder>{
+
+    private Context context;
+    private List<MyPDF> list;
+    private onClickListener monclicklistener;
+
+    public FreePDFAdapter(Context context, List<MyPDF> list, onClickListener onclicklistener) {
+        this.context = context;
+        this.list = list;
+        this.monclicklistener = onclicklistener;
+    }
+
+    @NonNull
+    @Override
+    public FreePDFAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context).inflate(R.layout.pdflayout2, parent, false);
+        return new ViewHolder(v, monclicklistener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull FreePDFAdapter.ViewHolder holder, int position) {
+
+        if(position % 2 == 0)
+        {
+
+        }
+        else
+        {
+            holder.itemView.setBackgroundColor(Color.parseColor("#f6f7f7"));
+        }
+
+        MyPDF model = list.get(position);
+
+        holder.pdf_name.setText(model.getName());
+        holder.pdf_date.setText(model.getCreated_date());
+        holder.total_ques.setText("Total Questions - "+model.getTotal_question());
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+
+        TextView pdf_name,pdf_date,total_ques;
+        onClickListener onClickListener;
+
+        public ViewHolder(View itemView,onClickListener onClickListener)
+        {
+            super(itemView);
+
+            pdf_name = itemView.findViewById(R.id.pdf_name);
+            pdf_date = itemView.findViewById(R.id.pdf_date);
+            total_ques = itemView.findViewById(R.id.pdf_questions);
+
+            this.onClickListener = onClickListener;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickListener.onClicked(getAdapterPosition());
+                }
+            });
+        }
+    }
+
+    public interface onClickListener {
+        void onClicked(int position);
+    }
+}
